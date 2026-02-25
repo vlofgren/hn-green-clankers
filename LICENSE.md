@@ -1,1 +1,1 @@
-Boil it, mash it, stick it in a steW
+Boil it, mash it, stick it in a stew
