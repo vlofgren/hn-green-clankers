@@ -7,6 +7,9 @@ import statistics
 import os.path
 import re
 
+import numpy as np
+from scipy.stats import chi2_contingency
+
 def scrape_comments(link: str, depth: int):
 
     ret = []
@@ -81,10 +84,25 @@ for (source,text,date) in comments:
             found_aiwords[source]+=1
             break
 
+def stats(data):
+    table = np.array([
+        [data['new'], cnt['new']],
+        [data['noob'], cnt['noob']]
+        ])
+    
+    _, p, _, _= chi2_contingency(table, correction=False)
+
+    print(f"p  = {p:.2}")
+
+
 print("AI or LLM mentions:")
 for (source, count) in found_aiwords.items():
     print(f"{source}: {round(10000*count/cnt[source])/100}%") 
 
+stats(found_aiwords)
+
 print("EM-dashes, arrows, similar:")
 for (source, count) in found_aimarkers.items():
     print(f"{source}: {round(10000*count/cnt[source])/100}%") 
+
+stats(found_aimarkers)
